@@ -24,14 +24,6 @@
         linkReferenceStyle: 'full', //'full'|'collapsed'|'shortcut'
         preformattedCode: false //false|true
     };
-    function getTurndownService(options, plugins) {
-        let turndownService = new TurndownService(options);
-        // plugins 是一个列表，
-        // 包含 turndownPluginGfm.strikethrough，turndownPluginGfm.tables，turndownPluginGfm.taskListItems，
-        // 全部使用可以用 turndownPluginGfm.gfm
-        turndownService.use(plugins);
-        return turndownService;
-    }
     function getMarkdown(turndownService, titleSelectors, contentSelectors) {
         let title = "";
         if (titleSelectors.length > 0) {
@@ -57,7 +49,7 @@
         return markdown;
     }
     let hexo2md = function () {
-        let turndownService = getTurndownService(basicOptions, [turndownPluginGfm.gfm]);
+        let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
         turndownService.addRule('mathjax_math', {
             filter: function (node, options) {
                 return node.nodeName === 'SCRIPT' && (node.getAttribute('type') === 'math/tex; mode=display' || node.getAttribute('type') === 'math/tex');
