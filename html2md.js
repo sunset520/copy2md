@@ -24,7 +24,39 @@
         linkReferenceStyle: 'full', //'full'|'collapsed'|'shortcut'
         preformattedCode: false //false|true
     };
-    let getMarkdown = function(turndownService, titleSelectors, contentSelectors) {
+
+    const allRules = {
+        all_math: {
+            filter: function (node, options) {
+                return node.nodeName === 'SPAN' && node.getAttribute('data-tex') !== null;
+            },
+            replacement: function (content, node, options) {
+                // 注意多行公式与内联公式
+                let dataTex = node.outerHTML.match(/data-tex="([^"]*)"/)[1].replaceAll('&amp;', '&');
+                if (dataTex.indexOf("begin") !== -1) {
+                    return '\n$$\n' + dataTex + '\n$$\n';
+                } else {
+                    return '$' + dataTex + '$';
+                }
+            }
+        },
+        figure: {
+            filter: function (node, options) {
+                return node.nodeName === 'FIGURE';
+            },
+            replacement: function (content, node, options) {
+                let imageSrc = node.querySelector("img").getAttribute("src");
+                let description = "";
+                let figCaption = node.querySelector("figcaption");
+                if (figCaption !== null) {
+                    description = figCaption.textContent;
+                }
+                return '![](' + imageSrc + ')  \n' + description;
+            }
+        }
+    };
+
+    let getMarkdown = function (turndownService, titleSelectors, contentSelectors) {
         let title = "";
         if (titleSelectors.length > 0) {
             for (const selector of titleSelectors) {
@@ -48,6 +80,14 @@
         const markdown = `${title}${content}`;
         return markdown;
     };
+    let copy2md = function (options, plugins, rules, titleSelectors, contentSelectors) {
+        let turndownService = new TurndownService(options).use(plugins);
+        for(let rule in rules) {
+            turndownService.addRule(rule, rules[rule]);
+        }
+        let md = getMarkdown(turndownService, titleSelectors, contentSelectors);
+        return md;
+    };
     let default2md = function () {
         let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
         let md = getMarkdown(turndownService, ['title'], ['body']);
@@ -55,34 +95,7 @@
     };
     let zhihu2md = function () {
         let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
-        turndownService.addRule('all_math', {
-            filter: function (node, options) {
-                return node.nodeName === 'SPAN' && node.getAttribute('data-tex') !== null;
-            },
-            replacement: function (content, node, options) {
-                // 注意多行公式与内联公式
-                let dataTex = node.outerHTML.match(/data-tex="([^"]*)"/)[1].replaceAll('&amp;', '&');
-                if (dataTex.indexOf("begin") !== -1) {
-                    return '\n$$\n' + dataTex + '\n$$\n';
-                } else {
-                    return '$' + dataTex + '$';
-                }
-            }
-        });
-        turndownService.addRule('figure', {
-            filter: function (node, options) {
-                return node.nodeName === 'FIGURE';
-            },
-            replacement: function (content, node, options) {
-                let imageSrc = node.querySelector("img").getAttribute("src");
-                let description = "";
-                let figCaption = node.querySelector("figcaption");
-                if (figCaption !== null) {
-                    description = figCaption.textContent;
-                }
-                return '![](' + imageSrc + ')  \n' + description;
-            }
-        });
+
         let md = getMarkdown(turndownService, ['article.Post-Main header.Post-Header h1.Post-Title', 'div.AuthorInfo-head'], ['article.Post-Main div.Post-RichTextContainer', 'span.RichText']);
         return md;
     };
@@ -167,7 +180,7 @@
                 return "";
             }
         });
-        let md = getMarkdown(turndownService, ['h2.title-text', 'h1.J-articleTitle', 'h1.article-title'], ['div.rno-markdown' ,'div.J-articleContent']);
+        let md = getMarkdown(turndownService, ['h2.title-text', 'h1.J-articleTitle', 'h1.article-title'], ['div.rno-markdown', 'div.J-articleContent']);
         return md;
     };
     let juejin2md = function () {
