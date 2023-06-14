@@ -105,11 +105,34 @@
                         mathFormula = line;
                     }
                 }
+                let unusedText = node.querySelectorAll('span.katex-html')[0].innerText;
+                let index = 0;
+                for (let c of unusedText) {
+                    if (c === ' ') {
+                        continue;
+                    }
+                    else {
+                        while(true){
+                            if(mathFormula[index] === ' ') {
+                                index++;
+                            }
+                            else {
+                                break;
+                            }
+                        }
+                        if(c===mathFormula[index]) {
+                            index++;
+                        }
+                        else {
+                            break;
+                        }
+                    }
+                }
                 if (node.classList.contains('katex--inline')) {
-                    return '$' + mathFormula + '$';
+                    return '$' + mathFormula.substr(index, mathFormula.length-1).trim() + '$';
                 }
                 else {
-                    return '\n$$\n' + mathFormula + '\n$$\n';
+                    return '\n$$\n' + mathFormula.substr(index, mathFormula.length-1).trim() + '\n$$\n';
                 }
             }
         });
