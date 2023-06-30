@@ -511,6 +511,18 @@
         let md = getMarkdown(turndownService, [], ['section.article-body']);
         return md;
     };
+    let codenong2md = function () {
+        // 这个网站代码是放在 table 里的
+        // 有问题，以后修改
+        let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
+        let md = getMarkdown(turndownService, ['h1.entry-title'], ['div.single-content']);
+        return md;
+    };
+    let freesion2md = function () {
+        let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
+        let md = getMarkdown(turndownService, ['div#main h2'], ['div#article_content']);
+        return md;
+    };
     const html2mds = {
         'default': default2md,
         'zhihu': zhihu2md,
@@ -550,7 +562,9 @@
         'haicoder': haicoder2md,
         'coder': coder2md,
         'guyuehome': guyuehome2md,
-        'jiguang': jiguang2md
+        'jiguang': jiguang2md,
+        'codenong': codenong2md,
+        'freesion': freesion2md
     };
     let currentKey = 'default';
     const info = window.location.host.toLowerCase();
