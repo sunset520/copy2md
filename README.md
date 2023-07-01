@@ -9,3 +9,4 @@
 - [copy2md.js](copy2md.js)
 - [hexo2md.js](hexo2md.js)
 - [hugo2md.js](hugo2md.js)
+- [copy2tex.js](copy2tex.js)
