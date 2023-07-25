@@ -538,7 +538,41 @@
         });
         let md = getMarkdown(turndownService, ['h1.circle-homepage-tit'], ['div.para']);
         return md;
-    }
+    };
+
+    let vsdiffer2md = function () {
+        let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
+        let md = getMarkdown(turndownService, ['h1'], ['div#article-content']);
+        return md;
+    };
+
+    let mathcubic2md = function () {
+        let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
+        turndownService.addRule('mathjax_math', {
+            filter: function (node, options) {
+                return node.nodeName === 'SCRIPT' && node.hasAttribute('type') && (node.getAttribute('type') === 'math/tex; mode=display' || node.getAttribute('type') === 'math/tex');
+            },
+            replacement: function (content, node, options) {
+                let mathText = node.innerText;
+                if (node.getAttribute('type') === 'math/tex') {
+                    return '$' + mathText + '$';
+                }
+                else {
+                    return '\n$$\n' + mathText + '\n$$\n';
+                }
+            }
+        });
+        turndownService.addRule('rm_math_unused', {
+            filter: function (node, options) {
+                return node.nodeName === 'DIV' && node.getAttribute('class') === 'MathJax_Display' || node.nodeName === 'SPAN' && node.getAttribute('class') === 'MathJax';
+            },
+            replacement: function (content, node, options) {
+                return "";
+            }
+        });
+        let md = getMarkdown(turndownService, ['div.article-box h2'], ['div#article_content']);
+        return md;
+    };
     const html2mds = {
         'default': default2md
         ,'zhihu': zhihu2md
@@ -582,6 +616,8 @@
         ,'codenong': codenong2md
         ,'freesion': freesion2md
         ,'saikr': saikr2md
+        ,'vsdiffer': vsdiffer2md
+        ,'mathcubic': mathcubic2md
     };
     let currentKey = 'default';
     const info = window.location.host.toLowerCase();
