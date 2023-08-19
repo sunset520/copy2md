@@ -26,7 +26,7 @@
         preformattedCode: false //false|true
     };
     // 获取 Markdown 内容
-    let getMarkdown = function(turndownService, titleSelectors, contentSelectors) {
+    let getMarkdown = function (turndownService, titleSelectors, contentSelectors) {
         let title = "";
         if (titleSelectors.length > 0) {
             for (const selector of titleSelectors) {
@@ -57,7 +57,7 @@
     };
     let zhihu2md = function () {
         let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
-        turndownService.addRule('all_math', {
+        turndownService.addRule('mathjax_math', {
             filter: function (node, options) {
                 return node.nodeName === 'SPAN' && node.getAttribute('data-tex') !== null;
             },
@@ -114,15 +114,15 @@
                         continue;
                     }
                     else {
-                        while(true){
-                            if(mathFormula[index] === ' ') {
+                        while (true) {
+                            if (mathFormula[index] === ' ') {
                                 index++;
                             }
                             else {
                                 break;
                             }
                         }
-                        if(c===mathFormula[index]) {
+                        if (c === mathFormula[index]) {
                             index++;
                         }
                         else {
@@ -131,10 +131,10 @@
                     }
                 }
                 if (node.classList.contains('katex--inline')) {
-                    return '$' + mathFormula.substr(index, mathFormula.length-1).trim() + '$';
+                    return '$' + mathFormula.substr(index, mathFormula.length - 1).trim() + '$';
                 }
                 else {
-                    return '\n$$\n' + mathFormula.substr(index, mathFormula.length-1).trim() + '\n$$\n';
+                    return '\n$$\n' + mathFormula.substr(index, mathFormula.length - 1).trim() + '\n$$\n';
                 }
             }
         });
@@ -192,7 +192,7 @@
                 return "";
             }
         });
-        let md = getMarkdown(turndownService, ['h2.title-text', 'h1.J-articleTitle', 'h1.article-title'], ['div.rno-markdown' ,'div.J-articleContent']);
+        let md = getMarkdown(turndownService, ['h2.title-text', 'h1.J-articleTitle', 'h1.article-title'], ['div.rno-markdown', 'div.J-articleContent']);
         return md;
     };
     let juejin2md = function () {
@@ -529,7 +529,7 @@
         let turndownService = new TurndownService(basicOptions).use([turndownPluginGfm.gfm]);
         turndownService.addRule('all_math', {
             filter: function (node, options) {
-                return node.nodeName === 'SPAN'&&
+                return node.nodeName === 'SPAN' &&
                     node.className === 'math-tex';
             },
             replacement: function (content, node, options) {
@@ -575,49 +575,49 @@
     };
     const html2mds = {
         'default': default2md
-        ,'zhihu': zhihu2md
-        ,'csdn': csdn2md
-        ,'aliyun': aliyun2md
-        ,'tencent': tencent2md
-        ,'juejin': juejin2md
-        ,'cnblogs': cnblogs2md
-        ,'jianshu': jianshu2md
-        ,'planetmath': planetmath2md
-        ,'oschina': oschina2md
-        ,'segmentfault': segmentfault2md
-        ,'writebug': writebug2md
-        ,'luogu': luogu2md
-        ,'cxymm': cxymm2md
-        ,'srcmini': srcmini2md
-        ,'51cto': _51cto2md
-        ,'biancheng': cbiancheng2md
-        ,'infoq': infoq2md
-        ,'imooc': imooc2md
-        ,'sspai': sspai2md
-        ,'leetcode': leetcode2md
-        ,'baidu': baidu2md
-        ,'learnku': learnku2md
-        ,'helloworld': helloworld2md
-        ,'itpub': itpub2md
-        ,'iotword': iotword2md
-        ,'hackertalk': hackertalk2md
-        ,'bytedance': bytedance2md
-        ,'bmabk': bmabk2md
-        ,'ctyun': ctyun2md
-        ,'huaweicloud': huaweicloud2md
-        ,'alipay': alipay2md
-        ,'cfanz': cfanz2md
-        ,'cvmart': cvmart2md
-        ,'weixin': weixin2md
-        ,'haicoder': haicoder2md
-        ,'coder': coder2md
-        ,'guyuehome': guyuehome2md
-        ,'jiguang': jiguang2md
-        ,'codenong': codenong2md
-        ,'freesion': freesion2md
-        ,'saikr': saikr2md
-        ,'vsdiffer': vsdiffer2md
-        ,'mathcubic': mathcubic2md
+        , 'zhihu': zhihu2md
+        , 'csdn': csdn2md
+        , 'aliyun': aliyun2md
+        , 'tencent': tencent2md
+        , 'juejin': juejin2md
+        , 'cnblogs': cnblogs2md
+        , 'jianshu': jianshu2md
+        , 'planetmath': planetmath2md
+        , 'oschina': oschina2md
+        , 'segmentfault': segmentfault2md
+        , 'writebug': writebug2md
+        , 'luogu': luogu2md
+        , 'cxymm': cxymm2md
+        , 'srcmini': srcmini2md
+        , '51cto': _51cto2md
+        , 'biancheng': cbiancheng2md
+        , 'infoq': infoq2md
+        , 'imooc': imooc2md
+        , 'sspai': sspai2md
+        , 'leetcode': leetcode2md
+        , 'baidu': baidu2md
+        , 'learnku': learnku2md
+        , 'helloworld': helloworld2md
+        , 'itpub': itpub2md
+        , 'iotword': iotword2md
+        , 'hackertalk': hackertalk2md
+        , 'bytedance': bytedance2md
+        , 'bmabk': bmabk2md
+        , 'ctyun': ctyun2md
+        , 'huaweicloud': huaweicloud2md
+        , 'alipay': alipay2md
+        , 'cfanz': cfanz2md
+        , 'cvmart': cvmart2md
+        , 'weixin': weixin2md
+        , 'haicoder': haicoder2md
+        , 'coder': coder2md
+        , 'guyuehome': guyuehome2md
+        , 'jiguang': jiguang2md
+        , 'codenong': codenong2md
+        , 'freesion': freesion2md
+        , 'saikr': saikr2md
+        , 'vsdiffer': vsdiffer2md
+        , 'mathcubic': mathcubic2md
     };
     let currentKey = 'default';
     const info = window.location.host.toLowerCase();
