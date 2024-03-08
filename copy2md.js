@@ -750,6 +750,22 @@
         }]
     };
 
+    const bilibili = {
+        titleSelectors: ['h1.title'],
+        contentSelectors: ['div#article-content'],
+        options: basicOptions,
+        plugins: [gfm],
+        rules: []
+    };
+
+    const nodeseek = {
+        titleSelectors: ['div.post-title'],
+        contentSelectors: ['div.post-content'],
+        options: basicOptions,
+        plugins: [gfm],
+        rules: []
+    };
+
     function html2md(website) {
         let turndownService = new TurndownService(website.options);
         for (const plugin of website.plugins) {
@@ -805,6 +821,8 @@
         , 'saikr': saikr
         , 'vsdiffer': vsdiffer
         , 'mathcubic': mathcubic
+        , 'bilibili': bilibili
+        , 'nodeseek': nodeseek
     };
 
     const info = window.location.host.toLowerCase();
@@ -818,3 +836,4 @@
     const md = html2md(website);
     GM_setClipboard(md);
 })();
+ 
