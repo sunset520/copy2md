@@ -766,6 +766,14 @@
         rules: []
     };
 
+    const sciencenet = {
+        titleSelectors: ['h1.ph'],
+        contentSelectors: ['div#blog_article'],
+        options: basicOptions,
+        plugins: [gfm],
+        rules: []
+    };
+
     function html2md(website) {
         let turndownService = new TurndownService(website.options);
         for (const plugin of website.plugins) {
@@ -823,6 +831,7 @@
         , 'mathcubic': mathcubic
         , 'bilibili': bilibili
         , 'nodeseek': nodeseek
+        , 'sciencenet': sciencenet
     };
 
     const info = window.location.host.toLowerCase();
