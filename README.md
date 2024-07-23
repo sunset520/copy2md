@@ -1,15 +1,18 @@
-# COPY2MD
+# Scripts
 
 ## 简介
 
-这是一些将网页内容复制并转换为 Markdown 格式的油猴脚本。
+这是一些油猴脚本。
 
 ## 组成
 
-- [copy2md.js](copy2md.js)
-- [hexo2md.js](hexo2md.js)
-- [hugo2md.js](hugo2md.js)
-- [copy2tex.js](copy2tex.js)
+- 将网页内容复制并转换为 Markdown 格式：
+    - [copy2md.js](copy2md.js)
+    - [hexo2md.js](hexo2md.js)
+    - [hugo2md.js](hugo2md.js)
+    - [copy2tex.js](copy2tex.js)
+- 美化
+    - [csdn.js](csdn.js)
 
 ## 代码解释
 

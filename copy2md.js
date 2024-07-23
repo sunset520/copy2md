@@ -508,7 +508,7 @@
 
     const leetcode = {
         titleSelectors: ['h1.css-izy0el-Title'],
-        contentSelectors: ['div.css-eojhts-StyledMarkdown'],
+        contentSelectors: ['div.css-eojhts-StyledMarkdown','div.break-words'],
         options: basicOptions,
         plugins: [gfm],
         rules: [{
@@ -842,7 +842,7 @@
             break;
         }
     }
-    const md = html2md(website);
+    const md = html2md(website) + `\n\n\n` + window.location;
     GM_setClipboard(md);
 })();
  
