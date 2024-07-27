@@ -508,7 +508,7 @@
 
     const leetcode = {
         titleSelectors: ['h1.css-izy0el-Title'],
-        contentSelectors: ['div.css-eojhts-StyledMarkdown','div.break-words'],
+        contentSelectors: ['div.css-eojhts-StyledMarkdown', 'div.break-words'],
         options: basicOptions,
         plugins: [gfm],
         rules: [{
@@ -774,6 +774,30 @@
         rules: []
     };
 
+    const fandom = {
+        titleSelectors: ['h1#firstHeading'],
+        contentSelectors: ['div.mw-parser-output'],
+        options: basicOptions,
+        plugins: [gfm],
+        rules: [{
+            key: 'fandom_math',
+            content: {
+                filter: function (node, options) {
+                    return (node.nodeName === 'SPAN' || node.nodeName === 'DIV') && (node.getAttribute('class') === 'mwe-math-element');
+                },
+                replacement: function (content, node, options) {
+                    let mathText = node.childNodes[0].childNodes[0].getAttribute('alttext').substring(0, node.childNodes[0].childNodes[0].getAttribute('alttext').length - 1).replace('{\\displaystyle ', '');
+                    if (node.nodeName === 'SPAN') {
+                        return '$' + mathText + '$';
+                    }
+                    else {
+                        return '\n$$\n' + mathText + '\n$$\n\n';
+                    }
+                }
+            }
+        }]
+    };
+
     function html2md(website) {
         let turndownService = new TurndownService(website.options);
         for (const plugin of website.plugins) {
@@ -832,6 +856,7 @@
         , 'bilibili': bilibili
         , 'nodeseek': nodeseek
         , 'sciencenet': sciencenet
+        , 'fandom': fandom
     };
 
     const info = window.location.host.toLowerCase();
@@ -845,4 +870,3 @@
     const md = html2md(website) + `\n\n\n` + window.location;
     GM_setClipboard(md);
 })();
- 

@@ -15,9 +15,15 @@
     // 修改样式
     GM_addStyle("#content_views pre,#content_views pre code {-webkit-touch-callout: auto !important;-webkit-user-select: auto !important;-khtml-user-select: auto !important;-moz-user-select: auto !important;-ms-user-select: auto !important;user-select: auto !important;}");
     GM_addStyle(".passport-login-container {display: none !important;}");
+    GM_addStyle("body {min-width: 100px;}");
+    GM_addStyle("#article_content {height: auto !important;}")
     document.querySelectorAll("div.d-flex")[0].setAttribute("class", "main_father clearfix justify-content-center");
     document.querySelectorAll("main")[0].setAttribute("style", "width:100%;");
     document.querySelectorAll("div#mainBox")[0].setAttribute("class", "");
+    document.querySelectorAll("div#content_views>p>img").forEach(img => {
+        img.parentElement.setAttribute("class", "img-center");
+        img.setAttribute("width", "width:60%;");
+    });
 
     // 移除一些不必要的元素
     const elementsToRemove = [
@@ -31,7 +37,8 @@
         "div.common-nps-box",
         "div.blog-footer-bottom",
         "div.passport-login-container",
-        "div.recommend-right"
+        "div.recommend-right",
+        ".hide-article-box"
     ];
     elementsToRemove.forEach(selector => {
         document.querySelectorAll(selector).forEach(ele => {
